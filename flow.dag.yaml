@@ -10,6 +10,7 @@ inputs:
   question:
     type: string
     is_chat_input: true
+    default: ""
 outputs:
   answer:
     type: string
@@ -48,13 +49,11 @@ nodes:
       frequency_penalty: 0
       chat_history: ${inputs.chat_history}
       question: ${inputs.question}
+      query_result: ${check_knowledge_base.output}
     provider: AzureOpenAI
     connection: shiun-openai-connection
     api: chat
     module: promptflow.tools.aoai
-    activate:
-      when: ${is_problem_clear.output}
-      is: "True"
     use_variants: false
   - name: ask_more_information
     type: llm
@@ -96,10 +95,16 @@ nodes:
     api: chat
     module: promptflow.tools.aoai
     use_variants: false
-  - name: check_knoledge_base
+  - name: check_knowledge_base
     type: python
     source:
       type: code
-      path: check_knoledge_base.py
-    inputs: {}
-    use_variants: false
+      path: check_knowledge_base.py
+    inputs:
+      query: ${inputs.question}
+      chat_history: ${inputs.chat_history}
+      conn: shiun-openai-connection
+    activate:
+      when: ${is_problem_clear.output}
+      is: Ture
+    aggregation: false
