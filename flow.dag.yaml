@@ -1,0 +1,105 @@
+id: template_chat_flow
+name: Template Chat Flow
+environment:
+  python_requirements_txt: requirements.txt
+inputs:
+  chat_history:
+    type: list
+    is_chat_input: false
+    is_chat_history: true
+  question:
+    type: string
+    is_chat_input: true
+outputs:
+  answer:
+    type: string
+    reference: ${answer.output}
+    is_chat_output: true
+nodes:
+  - name: is_problem_clear
+    type: llm
+    source:
+      type: code
+      path: chat.jinja2
+    inputs:
+      deployment_name: shiun-gpt-35-turbo-0613-deployment
+      temperature: 0.7
+      top_p: 1
+      max_tokens: 256
+      presence_penalty: 0
+      frequency_penalty: 0
+      chat_history: ${inputs.chat_history}
+      question: ${inputs.question}
+    provider: AzureOpenAI
+    connection: shiun-openai-connection
+    api: chat
+    module: promptflow.tools.aoai
+    use_variants: false
+  - name: summarize_contents
+    type: llm
+    source:
+      type: code
+      path: summarize_contents.jinja2
+    inputs:
+      deployment_name: shiun-gpt-35-turbo-0613-deployment
+      temperature: 1
+      top_p: 1
+      presence_penalty: 0
+      frequency_penalty: 0
+      chat_history: ${inputs.chat_history}
+      question: ${inputs.question}
+    provider: AzureOpenAI
+    connection: shiun-openai-connection
+    api: chat
+    module: promptflow.tools.aoai
+    activate:
+      when: ${is_problem_clear.output}
+      is: "True"
+    use_variants: false
+  - name: ask_more_information
+    type: llm
+    source:
+      type: code
+      path: ask_more_infomation.jinja2
+    inputs:
+      deployment_name: shiun-gpt-35-turbo-0613-deployment
+      temperature: 1
+      top_p: 1
+      presence_penalty: 0
+      frequency_penalty: 0
+      chat_history: ${inputs.chat_history}
+      question: ${inputs.question}
+    provider: AzureOpenAI
+    connection: shiun-openai-connection
+    api: chat
+    module: promptflow.tools.aoai
+    activate:
+      when: ${is_problem_clear.output}
+      is: "False"
+    use_variants: false
+  - name: answer
+    type: llm
+    source:
+      type: code
+      path: answer.jinja2
+    inputs:
+      deployment_name: shiun-gpt-35-turbo-0613-deployment
+      temperature: 1
+      top_p: 1
+      presence_penalty: 0
+      frequency_penalty: 0
+      ai_output_1: ${summarize_contents.output}
+      ai_output_2: ${ask_more_information.output}
+      chat_history: ${inputs.chat_history}
+    provider: AzureOpenAI
+    connection: shiun-openai-connection
+    api: chat
+    module: promptflow.tools.aoai
+    use_variants: false
+  - name: check_knoledge_base
+    type: python
+    source:
+      type: code
+      path: check_knoledge_base.py
+    inputs: {}
+    use_variants: false

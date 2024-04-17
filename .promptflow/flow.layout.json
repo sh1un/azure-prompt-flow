@@ -1,0 +1,54 @@
+{
+  "orientation": "Vertical",
+  "nodeLayouts": {
+    "inputs": {
+      "x": 475,
+      "y": 42,
+      "index": -1
+    },
+    "outputs": {
+      "x": 405,
+      "y": 578,
+      "index": -1
+    },
+    "is_problem_clear": {
+      "x": 237.5,
+      "y": 176,
+      "height": 75,
+      "index": 0
+    },
+    "summarize_contents": {
+      "x": 140,
+      "y": 310,
+      "height": 75,
+      "index": 1
+    },
+    "ask_more_information": {
+      "x": 490,
+      "y": 310,
+      "height": 75,
+      "index": 2
+    },
+    "answer": {
+      "x": 325,
+      "y": 444,
+      "height": 75,
+      "index": 3
+    },
+    "check_knoledge_base": {
+      "x": 655,
+      "y": 42,
+      "index": 4
+    }
+  },
+  "viewport": {
+    "transformMatrix": [
+      0.5226947310752468,
+      0,
+      0,
+      0.5226947310752468,
+      44.550605541727464,
+      -109.5105197159026
+    ]
+  }
+}
