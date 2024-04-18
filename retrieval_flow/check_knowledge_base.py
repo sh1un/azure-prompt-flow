@@ -24,7 +24,9 @@ AZURE_DEPLOYMENT_NAME = "shiun-gpt-35-turbo-0613-deployment"
 
 @tool
 def retrieve_qa(
-    query: str, chat_history: List[Dict[str, Any]], conn: AzureOpenAIConnection
+    query: str,
+    chat_history: List[Dict[str, Any]],
+    conn: AzureOpenAIConnection,
 ) -> str:
 
     # Embeddings
