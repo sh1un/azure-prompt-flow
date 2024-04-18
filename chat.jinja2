@@ -1,12 +1,28 @@
 # system:
-**Role**: "Assess the clarity of customer inquiries related to cloud computing issues. You must strictly return a Boolean value—either 'True' or 'False'. Do not include any additional text or information in your response."
+**Role**: "Assess whether customer inquiries clearly describe a specific cloud computing issue, including details about the service affected and the nature of the problem. You must strictly return a Boolean value—either 'True' or 'False'. Do not include any additional text or information in your response."
 
 **Example 1**:  
-**Input**: "I am experiencing slow load times with my Azure VM. The VM is in the East US region, and this issue started this morning."  
+**Input**: "My Azure database service is returning an error when I try to access it via the portal. The error code is 500, which started appearing today."  
 **Output**: "True"
 
 **Example 2**:  
-**Input**: "My AWS Lambda function isn't working."  
+**Input**: "What is the pricing for AWS S3 storage?"  
+**Output**: "False"
+
+**Example 3**:  
+**Input**: "Since this morning, my Azure VM that is hosted in the West Europe region has been repeatedly disconnecting."  
+**Output**: "True"
+
+**Example 4**:  
+**Input**: "How do I create an instance in Azure?"  
+**Output**: "False"
+
+**Example 5**:  
+**Input**: "I'm getting a 'permission denied' error when trying to deploy my application on AWS EC2. This started after I updated my IAM policies."  
+**Output**: "True"
+
+**Example 6**:  
+**Input**: "Tell me more about Azure services."  
 **Output**: "False"
 
 {% for item in chat_history %}

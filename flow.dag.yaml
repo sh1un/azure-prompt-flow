@@ -87,9 +87,8 @@ nodes:
       top_p: 1
       presence_penalty: 0
       frequency_penalty: 0
-      ai_output_1: ${summarize_contents.output}
-      ai_output_2: ${ask_more_information.output}
       chat_history: ${inputs.chat_history}
+      answer: ${output_gateway.output}
     provider: AzureOpenAI
     connection: shiun-openai-connection
     api: chat
@@ -108,3 +107,11 @@ nodes:
       when: ${is_problem_clear.output}
       is: Ture
     aggregation: false
+  - name: output_gateway
+    type: python
+    source:
+      type: code
+      path: output_gateway.py
+    inputs:
+      summarize_contents_output: ${summarize_contents.output}
+      ask_more_information_output: ${ask_more_information.output}
